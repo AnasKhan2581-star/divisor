@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Decimal Divisor Finder</title>
+    <script>
+      function findDivisors() {
+        var number = parseFloat(document.getElementById("userNumber").value);
+        var lowerBound = parseFloat(
+          document.getElementById("lowerBound").value
+        );
+        var upperBound = parseFloat(
+          document.getElementById("upperBound").value
+        );
+
+        // Error handling for invalid input
+        if (
+          isNaN(number) ||
+          isNaN(lowerBound) ||
+          isNaN(upperBound) ||
+          number <= 0 ||
+          lowerBound < 0 ||
+          upperBound <= 0
+        ) {
+          document.getElementById("result").innerHTML =
+            "Please enter valid positive numbers.";
+          return;
+        }
+
+        // Function to check for decimal divisors
+        function checkDecimalDivisors(num, lower, upper) {
+          var divisors = [];
+          var precision = 100; // Precision for checking decimal divisors
+
+          for (
+            var divisor = lower * precision;
+            divisor <= upper * precision;
+            divisor++
+          ) {
+            var divisorValue = divisor / precision;
+            if (num % divisorValue === 0) {
+              divisors.push(divisorValue.toFixed(2)); // Limit decimal places to 2
+            }
+          }
+          return divisors;
+        }
+
+        // Find divisors and display results
+        var divisors = checkDecimalDivisors(number, lowerBound, upperBound);
+        var resultText;
+        if (divisors.length > 0) {
+          resultText =
+            "Decimal divisors of " +
+            number +
+            " within " +
+            lowerBound +
+            " to " +
+            upperBound +
+            " are: " +
+            divisors.join(", ");
+        } else {
+          resultText =
+            "No decimal divisors of " +
+            number +
+            " found within " +
+            lowerBound +
+            " to " +
+            upperBound;
+        }
+        document.getElementById("result").innerHTML = resultText;
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Find Decimal Divisors</h1>
+
+    <div class="form-container">
+      <p>Enter a number to find its decimal divisors within a range:</p>
+      <input type="number" id="userNumber" placeholder="Enter your number" />
+      <br />
+      <p>Enter the lower bound of the range (decimal):</p>
+      <input
+        type="number"
+        step="0.01"
+        id="lowerBound"
+        placeholder="Lower bound (e.g. 80.5)"
+      />
+      <br />
+      <p>Enter the upper bound of the range (decimal):</p>
+      <input
+        type="number"
+        step="0.01"
+        id="upperBound"
+        placeholder="Upper bound (e.g. 97.2)"
+      />
+      <br />
+      <button onclick="findDivisors()">Find Divisors</button>
+    </div>
+
+    <div id="result"></div>
+  </body>
+</html>
